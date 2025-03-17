@@ -7,7 +7,7 @@
 | [김민성](https://github.com/minsung159357) | [구민지](https://github.com/minjee83) | [박재희](https://github.com/JaeHee-devSpace) | [이현정](https://github.com/nanahj) |
 
 
-## 1. 배경
+# 1. 배경
 
 이현정 사원은 한 대기업의 IT 관리자다. 이 회사는 고객 데이터를 저장하는 내부 서버를 운영 중이며, 사내 직원들이 원격으로 접속할 수 있도록 SSH (Secure Shell)를 사용하고 있다.최근 들어 서버 로그를 확인하던 이현정 사원은 이상한 점을 발견했다.
 ```
@@ -27,18 +27,55 @@ Mar 17 02:05:47 server sshd[4681]: Failed password for root from 203.0.113.45 po
 
 - `cron`을 이용해 **SSH 로그인 실패 기록을 자동으로 저장**
 - 이상 징후를 분석하여 **추후 보안 정책을 강화할 데이터로 활용**
-```
-코드 추가
-```
+
 
 **(2) 자동 IP 차단**
 
 - 로그인 실패가 **3회 이상 발생한 IP를 자동으로 차단**
 - `iptables` 또는 `fail2ban`을 이용해 **실시간으로 보안 강화**
 
+# **구현**
+## 1. SSH 로그인 로그 수집
+   ```
+   sudo cat /var/log/auth.log | grep "sshd"
+   ```
+## 2. 자동 로그 수집 스크립트 작성
+(1) ssh_log_collector.sh 스크립트 작성
 ```
-코드 추가
+#!/bin/bash
+
+# 로그 파일 경로 설정 (Ubuntu 기준)
+LOG_FILE="/var/log/auth.log"
+OUTPUT_FILE="/var/log/ssh_failed_attempts.log"
+
+# 현재 시간 추가하여 로그인 실패 기록 저장
+echo "==== SSH Failed Login Attempts - $(date) ====" >> $OUTPUT_FILE
+grep "Failed password" $LOG_FILE >> $OUTPUT_FILE
+echo "" >> $OUTPUT_FILE
+
+echo "로그 저장 완료: $OUTPUT_FILE"
 ```
+👉 이 스크립트는 auth.log에서 SSH 로그인 실패 기록을 가져와서 /var/log/ssh_failed_attempts.log에 저장
+
+
+
+(2) 실행 권한 부여
+```
+sudo chmod +x ssh_log_collector.sh
+```
+
+
+(3) 실행 테스트
+```
+sudo ./ssh_log_collector.sh
+```
+
+
+## 3. 자동 실행
+```
+* * * * * /path/to/ssh_log_collector.sh
+```
+
 
 ## 결과
 
