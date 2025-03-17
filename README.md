@@ -7,7 +7,7 @@
 | [김민성](https://github.com/minsung159357) | [구민지](https://github.com/minjee83) | [박재희](https://github.com/JaeHee-devSpace) | [이현정](https://github.com/nanahj) |
 
 
-**1. 배경**
+## 1. 배경
 
 이현정 사원은 한 대기업의 IT 관리자다. 이 회사는 고객 데이터를 저장하는 내부 서버를 운영 중이며, 사내 직원들이 원격으로 접속할 수 있도록 SSH (Secure Shell)를 사용하고 있다.최근 들어 서버 로그를 확인하던 이현정 사원은 이상한 점을 발견했다.
 ```
@@ -40,7 +40,7 @@ Mar 17 02:05:47 server sshd[4681]: Failed password for root from 203.0.113.45 po
 코드 추가
 ```
 
-**결과**
+## 결과
 
 ✅ **서버 보안 강화:** 자동으로 공격을 탐지하고 차단하여 해킹 위험 감소 
 
