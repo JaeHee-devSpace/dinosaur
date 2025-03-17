@@ -1,5 +1,12 @@
 # 시나리오 : 大기업 서버 관리자 이현정의 고민
 
+
+## 👨‍👨‍👦‍👦 팀원 소개  
+| <img src="https://avatars.githubusercontent.com/u/87555330?v=4" width="200px"> | <img src="https://avatars.githubusercontent.com/u/82265395?v=4" width="200px"> | <img src="https://github.com/JaeHee-devSpace.png" width="200px"> | <img src="https://avatars.githubusercontent.com/u/115103394?v=4" width="200px"> |
+| :---: | :---: | :---: | :---: |
+| [김민성](https://github.com/minsung159357) | [구민지](https://github.com/minjee83) | [박재희](https://github.com/JaeHee-devSpace) | [이현정](https://github.com/nanahj) |
+
+
 **1. 배경**
 
 이현정 사원은 한 대기업의 IT 관리자다. 이 회사는 고객 데이터를 저장하는 내부 서버를 운영 중이며, 사내 직원들이 원격으로 접속할 수 있도록 SSH (Secure Shell)를 사용하고 있다.최근 들어 서버 로그를 확인하던 이현정 사원은 이상한 점을 발견했다.
