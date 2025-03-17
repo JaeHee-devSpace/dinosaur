@@ -33,7 +33,7 @@ Mar 17 02:05:47 server sshd[4681]: Failed password for root from 203.0.113.45 po
 
 **(2) 자동 IP 차단**
 
-- 로그인 실패가 **5회 이상 발생한 IP를 자동으로 차단**
+- 로그인 실패가 **3회 이상 발생한 IP를 자동으로 차단**
 - `iptables` 또는 `fail2ban`을 이용해 **실시간으로 보안 강화**
 
 ```
