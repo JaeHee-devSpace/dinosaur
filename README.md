@@ -15,10 +15,15 @@ Mar 17 02:05:21 server sshd[4582]: Failed password for root from 203.0.113.45 po
 Mar 17 02:05:33 server sshd[4621]: Failed password for root from 203.0.113.45 port 54758 ssh2
 Mar 17 02:05:47 server sshd[4681]: Failed password for root from 203.0.113.45 port 54794 ssh2
 ```
-❗ **새벽 시간대에 알 수 없는 IP에서 반복적으로 로그인 시도를 하고 있었다.**
+❗ **새벽 시간대에 알 수 없는 IP에서 반복적으로 로그인 시도를 하고 있었다.** 
+<br/>
 더욱 놀라운 것은, 이런 공격이 **하루에 수천 번씩** 발생하고 있었다는 점이다. 이 공격이 성공하면 해커는 **서버에 불법적으로 침입**하여 데이터를 유출하거나 시스템을 마비시킬 수 있다.
 
+<br/>
+
 **해결책: 자동화된 SSH 로그인 감지 및 차단 시스템**
+
+<br/>
 
 
 **SSH 로그인 로그를 자동으로 수집하고, 일정 횟수 이상 로그인 실패가 발생한 IP를 자동으로 차단하는 시스템**을 구축하기로 했다.
@@ -77,7 +82,11 @@ sudo ./ssh_log_collector.sh
 ```
 
 
-## 결과
+## 4. 결과
+
+![image](https://github.com/user-attachments/assets/7329f5b9-c504-4d3e-b3de-15a35eed5e72)
+
+**기대효과**
 
 ✅ **서버 보안 강화:** 자동으로 공격을 탐지하고 차단하여 해킹 위험 감소 
 
