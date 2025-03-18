@@ -34,10 +34,9 @@ Mar 17 02:05:47 server sshd[4681]: Failed password for root from 203.0.113.45 po
 - 이상 징후를 분석하여 **추후 보안 정책을 강화할 데이터로 활용**
 
 
-**(2) 자동 IP 차단**
+**(2) 자동 알림 수신**
 
-- 로그인 실패가 **3회 이상 발생한 IP를 자동으로 차단**
-- `iptables` 또는 `fail2ban`을 이용해 **실시간으로 보안 강화**
+- 로그인 실패가 **3회 이상 발생한 IP를 슬랙 알림으로 수신**
 
 # **구현**
 ## 1. SSH 로그인 로그 수집
@@ -49,42 +48,69 @@ Mar 17 02:05:47 server sshd[4681]: Failed password for root from 203.0.113.45 po
 ```
 #!/bin/bash
 
-# 로그 파일 경로 설정 (Ubuntu 기준)
-LOG_FILE="/var/log/auth.log"
-OUTPUT_FILE="/var/log/ssh_failed_attempts.log"
+# 설정
+SLACK_WEBHOOK_URL="_"  # Slack Webhook URL
+LOG_FILE="/home/admin1/test.log"
+FAILURE_TRACK_FILE="/home/admin1/.login_failure_tracker"  # 실패 여부를 기록할 파일
 
-# 현재 시간 추가하여 로그인 실패 기록 저장
-echo "==== SSH Failed Login Attempts - $(date) ====" >> $OUTPUT_FILE
-grep "Failed password" $LOG_FILE >> $OUTPUT_FILE
-echo "" >> $OUTPUT_FILE
+# 로그인 실패 횟수 확인 (최근 1시간 이내의 실패 횟수)
+FAILURE_COUNT=$(grep "Failed password" /var/log/auth.log | wc -l)
 
-echo "로그 저장 완료: $OUTPUT_FILE"
+# 이전에 알림을 보냈는지 확인
+if [[ -f $FAILURE_TRACK_FILE ]]; then
+    LAST_FAILURE_COUNT=$(cat $FAILURE_TRACK_FILE)
+else
+    LAST_FAILURE_COUNT=0
+fi
+
+# 로그인 실패 3회 이상이고, 이전에 알림을 보지 않았다면
+if [ $FAILURE_COUNT -ge 3 ] && [ $FAILURE_COUNT -ne $LAST_FAILURE_COUNT ]; then
+    # 알림을 Slack으로 전송
+    curl -X POST -H 'Content-type: application/json' --data '{"text":"3회 이상 로그인에 실패했습니다"}' $SLACK_WEBHOOK_URL
+
+    # 로그 파일에 기록
+    echo "$(date) - 3회 이상 로그인에 실패했습니다." >> $LOG_FILE
+
+    # 실패 횟수를 기록 (다시 실패 이력 확인을 위한 파일)
+    echo $FAILURE_COUNT > $FAILURE_TRACK_FILE
+else
+    echo "$(date) - 로그인 실패가 3회 미만이거나 이전에 알림을 보냈습니다." >> /home/admin1/check_login_failures.log
+fi
 ```
-👉 이 스크립트는 auth.log에서 SSH 로그인 실패 기록을 가져와서 /var/log/ssh_failed_attempts.log에 저장
+👉 이 스크립트는 auth.log에서 SSH 로그인 실패 기록을 가져와서 /var/log/check_login_failures.log에 저장
 
 
 
 (2) 실행 권한 부여
 ```
-sudo chmod +x ssh_log_collector.sh
+chmod +x /home/admin1/check_login_failures.sh
 ```
 
 
 (3) 실행 테스트
 ```
-sudo ./ssh_log_collector.sh
+cat check_login_failures.log
 ```
+![image](https://github.com/user-attachments/assets/b843199d-cefd-4473-b217-29a647619835)
 
 
 ## 3. 자동 실행
 ```
-* * * * * /path/to/ssh_log_collector.sh
+* * * * * /bin/bash /home/admin1/check_login_failures.sh > /home/admin1/check_login_fail>
 ```
 
+## 4. 알림 연동 스크립트 추가
+slack api 주소 발급받아 **로그인 3회 실패** 알림 전송
 
-## 4. 결과
+```
+ # 알림을 Slack으로 전송
+    curl -X POST -H 'Content-type: application/json' --data '{"text":"3회 이상 로그인에 실패했습니다"}' $SLACK_WEBHOOK_URL
+```
 
-![image](https://github.com/user-attachments/assets/7329f5b9-c504-4d3e-b3de-15a35eed5e72)
+## 5. 결과
+
+![image](https://github.com/user-attachments/assets/3d21c7c9-45a7-40b6-a59a-925a80d9b063)
+
 
 **기대효과**
 
