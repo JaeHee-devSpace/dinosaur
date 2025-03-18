@@ -93,6 +93,12 @@ cat check_login_failures.log
 ```
 ![image](https://github.com/user-attachments/assets/b843199d-cefd-4473-b217-29a647619835)
 
+```
+cat test.log
+```
+![image](https://github.com/user-attachments/assets/01965261-c672-469c-b7f8-e7cdc222a4f4)
+
+
 
 ## 3. 자동 실행
 ```
