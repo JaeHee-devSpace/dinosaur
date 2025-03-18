@@ -77,7 +77,7 @@ else
     echo "$(date) - 로그인 실패가 3회 미만이거나 이전에 알림을 보냈습니다." >> /home/admin1/check_login_failures.log
 fi
 ```
-👉 이 스크립트는 auth.log에서 SSH 로그인 실패 기록을 가져와서 /var/log/check_login_failures.log에 저장
+👉 이 스크립트는 auth.log에서 SSH 로그인 실패 기록을 가져와서 3회 미만이라면 /var/log/check_login_failures.log에 저장하고 3회 이상이라면 /home/admin1/test.log 에 저장.
 
 
 
