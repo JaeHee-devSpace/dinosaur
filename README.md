@@ -109,7 +109,8 @@ slack api 주소 발급받아 **로그인 3회 실패** 알림 전송
 
 ## 5. 결과
 
-![image](https://github.com/user-attachments/assets/3d21c7c9-45a7-40b6-a59a-925a80d9b063)
+![image](https://github.com/user-attachments/assets/5ba4b9a8-d07d-4ffc-a7fa-03c1dc3625cd)
+
 
 
 **기대효과**
